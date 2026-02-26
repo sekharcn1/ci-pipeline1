@@ -68,7 +68,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: sekharcn/ci-pipeline:TAG_TO_REPLACE
+          image: sekharcn/ci-pipeline:4e084451c1384cde7e1e32ec4df3f3e7400e0fbd
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
@@ -109,7 +109,7 @@ metadata:
   name: ci-pipeline
   namespace: prod
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik
   rules:
     - host: ci-pipeline.local
       http:
