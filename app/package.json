@@ -1,0 +1,13 @@
+{
+  "name": "ci-pipeline",
+  "version": "1.0.0",
+  "description": "Node app for CI/CD Kubernetes deployment",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "redis": "^4.7.0"
+  }
+}

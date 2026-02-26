@@ -1,0 +1,33 @@
+name: CD - Deploy to Kubernetes
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Docker image tag to deploy"
+        required: true
+        default: "latest"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG_B64 }}" | base64 -d > ~/.kube/config
+          kubectl get nodes
+
+      - name: Replace image tag and apply manifests
+        run: |
+          sed "s|TAG_TO_REPLACE|${{ github.event.inputs.image_tag }}|g" k8s/prod.yaml | kubectl apply -f -
+
+      - name: Verify rollout
+        run: |
+          kubectl -n prod get deploy,po,svc,ing
+          kubectl -n prod rollout status deploy/redis
+          kubectl -n prod rollout status deploy/ci-pipeline
